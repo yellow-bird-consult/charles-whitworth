@@ -110,3 +110,6 @@ dist
 
 # For the Rust builds
 target/
+
+# to reduce services
+services/

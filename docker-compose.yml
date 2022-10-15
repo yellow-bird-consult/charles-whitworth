@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+
+  dev_librarian:
+    container_name: dev_librarian
+    image: dev_librarian
+    build:
+      context: ./services/librarian/src
+      args:
+        ENV: "PRODUCTION"
+    restart: always
+    environment:
+      - 'REGION_NAME=test'
+      - 'AWS_ACCESS_KEY_ID=test'
+      - 'AWS_SECRET_ACCESS_KEY=test'
+      - 'PATIENT_DOCUMENTATION_S3=FALSE'
+      - 'ENVIRONMENT_CONFIG=TRUE'
+    ports:
+      - "5002:5002"
