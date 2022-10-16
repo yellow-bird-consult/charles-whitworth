@@ -39,11 +39,6 @@ struct IncomingBody {
 async fn handle(req: Request<Body>, channel_sender: Sender<StateActorMessage>) -> Result<Response<Body>, Infallible> {
     println!("incoming message from the outside");
 
-    let method = req.method().clone();
-    println!("{}", method);
-    let uri = req.uri();
-    println!("{}", uri);
-
     let bytes = body::to_bytes(req.into_body()).await.unwrap();
     let string_body = String::from_utf8(bytes.to_vec()).expect("response was not valid utf-8");
     println!("{}", string_body);
