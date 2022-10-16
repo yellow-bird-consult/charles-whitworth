@@ -18,4 +18,4 @@ FROM gcr.io/distroless/cc-debian10
 COPY --from=build /app/target/release/charles_whitworth /usr/local/bin/charles_whitworth
 
 EXPOSE 8082
-ENTRYPOINT ["charles-whitworth"]
+ENTRYPOINT ["charles_whitworth"]
