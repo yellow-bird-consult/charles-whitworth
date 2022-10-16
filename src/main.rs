@@ -73,7 +73,7 @@ async fn main() {
 
     // spin off a thread for our lib runner actor
     tokio::spawn(async move {
-        let lib_runner_actor = LibRunnerActor::new(runner_rx, state_tx, 10);
+        let lib_runner_actor = LibRunnerActor::new(runner_rx, state_tx, 4);
         lib_runner_actor.run().await;
     });
 

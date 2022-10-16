@@ -50,6 +50,7 @@ impl StateActorMessage {
     pub async fn send_to_librarian(&self) {
         let lib_base_url = env::var("LIBRARIAN_URL").unwrap();
         let lib_url: String = lib_base_url + "/v0/actions/chatbot/post";
+        println!("{}", lib_url);
         let joined = self.block_data.clone().unwrap().join("$$");
 
         let body = PostBody {
