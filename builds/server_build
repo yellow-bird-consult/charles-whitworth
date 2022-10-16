@@ -11,11 +11,11 @@ ARG ENV="PRODUCTION"
 RUN echo "$ENV"
 
 RUN if [ "$ENV" = "PRODUCTION" ] ; then cargo build --release ; else cargo build ; fi
-RUN if [ "$ENV" = "PRODUCTION" ] ; then echo "no need to copy" ; else mkdir /app/target/release/ && cp /app/target/debug/charles-whitworth /app/target/release/charles-whitworth ; fi
+RUN if [ "$ENV" = "PRODUCTION" ] ; then echo "no need to copy" ; else mkdir /app/target/release/ && cp /app/target/debug/charles_whitworth /app/target/release/charles_whitworth ; fi
 
 FROM gcr.io/distroless/cc-debian10
 
-COPY --from=build /app/target/release/charles-whitworth /usr/local/bin/charles-whitworth
+COPY --from=build /app/target/release/charles_whitworth /usr/local/bin/charles_whitworth
 
 EXPOSE 8082
 ENTRYPOINT ["charles-whitworth"]
