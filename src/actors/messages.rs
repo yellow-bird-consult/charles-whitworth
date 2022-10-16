@@ -49,7 +49,7 @@ impl StateActorMessage {
     /// Sends ```self.block_data``` to the librarian server.
     pub async fn send_to_librarian(&self) {
         let lib_base_url = env::var("LIBRARIAN_URL").unwrap();
-        let lib_url: String = lib_base_url + "/v0/actions/chatbot/post";
+        let lib_url: String = "http://".to_owned() + &lib_base_url + "/v0/actions/chatbot/post";
         println!("{}", lib_url);
         let joined = self.block_data.clone().unwrap().join("$$");
 
