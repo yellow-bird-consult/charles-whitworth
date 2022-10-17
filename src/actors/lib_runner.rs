@@ -40,12 +40,14 @@ impl LibRunnerActor {
                 single_data: None,
                 block_data: None
             };
+            println!("Lib Runner is loading and firing");
             match self.sender.send(message).await {
                 Ok(_) => {
                     let message = self.receiver.recv().await.unwrap();
                     
                     match message.message_type {
                         MessageType::OUTPUT => {
+                            println!("send to lib");
                             message.send_to_librarian().await;
                         },
                         _ => {

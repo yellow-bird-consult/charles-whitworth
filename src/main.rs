@@ -39,19 +39,15 @@ struct IncomingBody {
 async fn handle(req: Request<Body>, channel_sender: Sender<StateActorMessage>) -> Result<Response<Body>, Infallible> {
     println!("incoming message from the outside");
 
-    let method = req.method().clone();
-    println!("{}", method);
-    let uri = req.uri();
-    println!("{}", uri);
-
     let bytes = body::to_bytes(req.into_body()).await.unwrap();
     let string_body = String::from_utf8(bytes.to_vec()).expect("response was not valid utf-8");
+    println!("{}", string_body);
     let value: IncomingBody = serde_json::from_str(&string_body.as_str()).unwrap();
 
     let message = StateActorMessage {
         message_type: MessageType::INPUT,
         patient_id: Some(value.patient_id),
-        single_data: Some(format!("{}>>{}>>{}>>", value.input, value.output, value.turn)),
+        single_data: Some(format!("{}>>{}>>{}>>", value.turn, value.input, value.output)),
         block_data: None
     };
     channel_sender.send(message).await.unwrap();
@@ -62,7 +58,7 @@ async fn handle(req: Request<Body>, channel_sender: Sender<StateActorMessage>) -
 
 #[tokio::main]
 async fn main() {
-    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 8082));
 
     // define the two channels to enable communication throughout 
     let (state_tx, state_rx) = mpsc::channel::<StateActorMessage>(1);
@@ -77,7 +73,7 @@ async fn main() {
 
     // spin off a thread for our lib runner actor
     tokio::spawn(async move {
-        let lib_runner_actor = LibRunnerActor::new(runner_rx, state_tx, 30);
+        let lib_runner_actor = LibRunnerActor::new(runner_rx, state_tx, 4);
         lib_runner_actor.run().await;
     });
 
